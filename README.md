@@ -1,2 +1,2 @@
 # Personal-Scripst
-This respository consists in some scripts that I have developed in topics such as heat transfer, remote sensing and spatial analysis.
+This respository consists of some scripts that I have developed in topics such as heat transfer, remote sensing and spatial analysis.
