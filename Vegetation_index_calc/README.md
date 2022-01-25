@@ -4,7 +4,9 @@ vegetation indices (VI) rasters.
 NOTE 1: SATELLITE DATA: In the script, Sentinel-2A imagery was used. The image is "S2A_MSIL1C_20211224T160701_N0301_R097_T16PFS_20211224T194453". It corresponds to 12/24/2021.
 You can download the data at: https://scihub.copernicus.eu/dhus/#/home
 
-NOTE 2: The following folders should be created in the same place from where you run the script:
+NOTE 2: Script run with python v3.8.8
+
+NOTE 3: The following folders should be created in the same place from where you run the script:
 
 "Sentinel2-imagery", this folder contains all the sentinel 2 bands files (it is were the bands should be stored).
 
