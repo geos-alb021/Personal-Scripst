@@ -55,6 +55,14 @@ selection.to_file(aoi2)
 with fio.open("C:/Users/alcof/Desktop/Scripts/Veg_index/Shapefile_AOI/AOI2.shp", "r") as shapefile:
     shape = [feature["geometry"] for feature in shapefile]
 
+#Loading the directory for storing the clipped rasters
+clipped_directory = 'C:/Users/alcof/Desktop/Scripts/Veg_index/clipped_raster'
+clipped_bands = os.listdir(clipped_directory) 
+
+#Removing old files in the clipped raster folder, so only the new rasters of each run are stored
+for files in clipped_bands:
+      os.remove(clipped_directory+'/'+files)
+
 #Cropping the imagery package to an area of interest (AOI)
 print("Cropping the bands...")
 for band in bands:
@@ -76,8 +84,8 @@ for band in bands:
 print("Bands cropped")
 print('\n')
 
-clipped_directory = 'C:/Users/alcof/Desktop/Scripts/Veg_index/clipped_raster'
-clipped_bands = os.listdir(clipped_directory)
+#Loading again the directory with the new clipped data
+clipped_bands = os.listdir(clipped_directory) 
 
 band2 = rio.open(clipped_directory + '/' + clipped_bands[1]) #Blue
 band3 = rio.open(clipped_directory + '/' + clipped_bands[2]) #Green
