@@ -1,0 +1,2 @@
+SATELLITE DATA: For the script the Sentinel-2 imagery used was "S2A_MSIL1C_20211224T160701_N0301_R097_T16PFS_20211224T194453". This image corresponds to 12/24/2021.
+
