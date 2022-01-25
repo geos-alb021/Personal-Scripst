@@ -1,10 +1,10 @@
-###-------------------Vegetation Indices Calculation For Sentinel 2 Imagery-------------------###
+###-------------------Vegetation Indices Calculation Using Sentinel 2 Imagery-------------------###
 
 ###Authorship: Alberto F. Coto Fonseca
 
 #Description: This script automates the processing of satellite imagery from Sentinel-2 for the calculation and creation of
-#vegetation indices (VI) rasters. Using an area of interest (AOI) shapefile all bands of the image are cropped. This new rasters are 
-#saved in a new folder. Later on they are used for the calculation of the VI.
+#vegetation indices (VI) rasters. Using an area of interest (AOI) shapefile, all bands of the image are cropped, which are 
+#saved in a new folder. Later on they are used for the calculation of the VI (NDVI, SAVI, GNDVI and Moisture Index)
 
 #For cropping every band with the AOI shapefile, both of them should have the same projected coordinates; therefore, a revision 
 #of both crs is made. If their "crs" differ, a reprojection of the AOI is made, so it can overlap the bands.
@@ -19,6 +19,7 @@ from matplotlib import interactive
 import os as os
 import geopandas as gpd
 import fiona as fio
+import shutil
 
 ##Loading the bands of the satellite imagery that are going to be used in the calculation
 print("Loading satellite image bands")
@@ -44,7 +45,7 @@ if aoi.crs != band2i.crs:
     aoi = aoi.to_crs("epsg:32616")     
 print('\n')
 
-##-------Creating a new shapefile with the reprojected AOI-------##
+##--------------Creating a new shapefile with the reprojected AOI--------------##
 
 #Creating the new shapefile
 aoi2 = "C:/Users/alcof/Desktop/Scripts/Veg_index/Shapefile_AOI/AOI2.shp"
@@ -59,7 +60,7 @@ with fio.open("C:/Users/alcof/Desktop/Scripts/Veg_index/Shapefile_AOI/AOI2.shp",
 clipped_directory = 'C:/Users/alcof/Desktop/Scripts/Veg_index/clipped_raster'
 clipped_bands = os.listdir(clipped_directory) 
 
-#Removing old files in the clipped raster folder, so only the new rasters of each run are stored
+#Removing old files in the "clipped raster folder"; therefore, only the new rasters of each run are stored
 for files in clipped_bands:
       os.remove(clipped_directory+'/'+files)
 
@@ -87,6 +88,7 @@ print('\n')
 #Loading again the directory with the new clipped data
 clipped_bands = os.listdir(clipped_directory) 
 
+#Loading each band
 band2 = rio.open(clipped_directory + '/' + clipped_bands[1]) #Blue
 band3 = rio.open(clipped_directory + '/' + clipped_bands[2]) #Green
 band4 = rio.open(clipped_directory + '/' + clipped_bands[3]) #Red
@@ -115,8 +117,7 @@ print('\n')
 #Allowing division by zero
 np.seterr(divide='ignore', invalid='ignore')
 
-
-###--------------Calculating Spectral Indices-----------------###
+###--------------Calculating Spectral Indices--------------###
 print("Calculating spectral indices")
 
 ndvi = np.where(nir+red==0, 0, (nir-red)/(nir+red)) #Normalized Difference Vegetation Index (NDVI)
@@ -146,11 +147,16 @@ print("Moisture index min:", mi.min())
 print("Moisture index max:", mi.max())
 print('\n')
 
-###---------Creating the combination of bands rasters and vegetation index rasters---------##
+#Extracting the date from one of the clipped rasters
+name = clipped_bands[0]
+lock = name[7:15]
+date = lock[4:6]+'-'+lock[6:8]+'-'+lock[0:4]
+
+###--------------Creating the combination of bands rasters and vegetation index rasters--------------##
 
 print("Creating rasters of the band combinationa...")
 #Creating a natural color combination raster
-naturalColor = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2natcolor.tiff', 'w', driver='Gtiff',
+naturalColor = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2natcolor'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
                      count=3, #number of bands
                      crs=band2.crs,
@@ -164,7 +170,7 @@ naturalColor.write(band2.read(1),3) #Blue
 naturalColor.close()
 
 #Creating a false color combination raster
-falseColor = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2falsecolor.tiff', 'w', driver='Gtiff',
+falseColor = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2falsecolor'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
                      count=3, #number of bands
                      crs=band2.crs,
@@ -180,7 +186,7 @@ print('\n')
 
 print("Creating rasters of the vegetation indices...")
 #Creating the NDVI raster
-NDVI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2NDVI.tiff', 'w', driver='Gtiff',
+NDVI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2NDVI'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
                      count=1, #number of bands
                      crs=band2.crs,
@@ -191,7 +197,7 @@ NDVI.write(ndvi,1)
 NDVI.close()
 
 #Creating the GNDVI raster
-GNDVI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2GNDVI.tiff', 'w', driver='Gtiff',
+GNDVI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2GNDVI'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
                      count=1, #number of bands
                      crs=band2.crs,
@@ -202,7 +208,7 @@ GNDVI.write(gndvi,1)
 GNDVI.close()
 
 #Creating the SAVI raster
-SAVI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2SAVI.tiff', 'w', driver='Gtiff',
+SAVI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2SAVI'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
                      count=1, #number of bands
                      crs=band2.crs,
@@ -213,7 +219,7 @@ SAVI.write(savi,1)
 SAVI.close()
 
 #Creating the MI raster
-MI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2MI.tiff', 'w', driver='Gtiff',
+MI = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2MI'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
                      count=1, #number of bands
                      crs=band2.crs,
@@ -226,13 +232,7 @@ print('\n')
 
 ###--------------Plotting the results--------------###
 
-#Opening the rasters
-#ndvi_image = rio.open('C:/Users/alcof/Documents/DOCTORADO/PROGRAMMING/Veg_index/output/sent2NDVI.tiff', count=1)
-#gndvi_image = rio.open('C:/Users/alcof/Documents/DOCTORADO/PROGRAMMING/Veg_index/output/sent2GNDVI.tiff', count=1)
-#savi_image = rio.open('C:/Users/alcof/Documents/DOCTORADO/PROGRAMMING/Veg_index/output/sent2SAVI.tiff', count=1)
-
-
-#Normalizing and stacking the bands of the true color and false color rasters for the correct color visualisation
+#Normalizing and stacking the bands of the true color and false color rasters for correct color visualisation
 
 def normalize(array): #Utilizing a normalizing funtion
     array_min = array.min()
@@ -249,7 +249,9 @@ nc_norm = np.dstack((red2, green2, blue2))
 fc_norm = np.dstack((nir2, red2, green2))
 
 print("Plotting the combination bands and the vegetation indices rasters")
-interactive(True)
+interactive(True) #Used for plotting the images in the IDLE. If using an IDE such Spyder, comment this line
+                   # if you want to plot in the IDE directly.
+
 fig, (ax1,ax2) = plt.subplots(1,2,figsize= (21,7))
 fig.suptitle('Combination bands')
 ax1.imshow(nc_norm)
@@ -258,6 +260,7 @@ ax2.imshow(fc_norm)
 ax1.set_title("Natural Color")
 ax2.set_title("False Color")
 fig.tight_layout()  
+print('\n')
 
 fig, ((ax3,ax4),(ax5,ax6)) = plt.subplots( nrows=2, ncols=2, figsize= (21,7))
 fig.suptitle('Combination bands and Vegetation Spectral Indices')
@@ -270,12 +273,37 @@ ax3.set_title("NDVI")
 ax4.set_title("SAVI")
 ax5.set_title("Green NDVI")
 ax6.set_title("Moisture Index")
-
 fig.tight_layout()               
 
+###--------------Moving the rasters to the desired new folder--------------###
 
+#Creating a subfolder with date for name and moving the generated rasters to it.
+#This part is made to maintain an order of the calculated rasters according to the date of the image
+output_path = 'C:/Users/alcof/Desktop/Scripts/Veg_index/output'
+out_files = os.listdir(output_path)
 
+sub_folder = output_path+'/'+date
 
+if not os.path.exists(sub_folder):
+    os.mkdir(sub_folder)
 
+for files in out_files:
+    if files.endswith(".tiff"):
+        shutil.move(output_path+'/'+files, sub_folder)
+        
 
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
