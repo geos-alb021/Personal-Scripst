@@ -15,6 +15,7 @@ import rasterio as rio
 import rasterio.mask as mask
 from rasterio import plot
 import matplotlib.pyplot as plt
+from matplotlib import interactive
 import os as os
 import geopandas as gpd
 import fiona as fio
@@ -240,6 +241,7 @@ nc_norm = np.dstack((red2, green2, blue2))
 fc_norm = np.dstack((nir2, red2, green2))
 
 print("Plotting the combination bands and the vegetation indices rasters")
+interactive(True)
 fig, (ax1,ax2) = plt.subplots(1,2,figsize= (21,7))
 fig.suptitle('Combination bands')
 ax1.imshow(nc_norm)
