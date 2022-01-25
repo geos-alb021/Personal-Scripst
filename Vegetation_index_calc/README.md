@@ -2,9 +2,9 @@ Description: This script automates the processing of satellite imagery from Sent
 vegetation indices (VI) rasters.
 
 
-For the script the following folders should be created:
+The following folders should be created in the same place from where you run the script:
 
-"Sentinel2-imagery", this folder contains all the sentinel 2 bands files.
+"Sentinel2-imagery", this folder contains all the sentinel 2 bands files (it is were the bands should be stored).
 
 "clipped_raster", this folder will contain the clipped bands.
 
