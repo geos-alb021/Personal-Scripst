@@ -1,3 +1,7 @@
+Description: This script automates the processing of satellite imagery from Sentinel-2 for the calculation and creation of natural color, false color and
+vegetation indices (VI) rasters.
+
+
 For the script the following folders should be created:
 
 "Sentinel2-imagery", this folder contains all the sentinel 2 bands files.
