@@ -277,7 +277,7 @@ fig.tight_layout()
 
 ###--------------Moving the rasters to the desired new folder--------------###
 
-#Creating a subfolder with date for name and moving the generated rasters to it.
+#Creates a subfolder with the date of the image as name and moves the generated rasters to it.
 #This part is made to maintain an order of the calculated rasters according to the date of the image
 output_path = 'C:/Users/alcof/Desktop/Scripts/Veg_index/output'
 out_files = os.listdir(output_path)
