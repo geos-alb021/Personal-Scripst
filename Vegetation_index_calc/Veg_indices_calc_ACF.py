@@ -249,7 +249,7 @@ nc_norm = np.dstack((red2, green2, blue2))
 fc_norm = np.dstack((nir2, red2, green2))
 
 print("Plotting the combination bands and the vegetation indices rasters")
-interactive(True) #Used for plotting the images in the IDLE. If using an IDE such Spyder, comment this line
+interactive(True) #Used for plotting the images in the python IDLE. If using an IDE such Spyder, comment this line
                    # if you want to plot in the IDE directly.
 
 fig, (ax1,ax2) = plt.subplots(1,2,figsize= (21,7))
