@@ -147,8 +147,8 @@ while Tmean>50:  #The process is repeated until the mean temperature reaches 50�
     
 #Plotting the reactor's temperature condition at 50°C
 plt.imshow(Temp, cmap='jet')
-plt.xlabel("Width (m)")
-plt.ylabel("Height (m)")
+plt.xlabel("Width")
+plt.ylabel("Height")
 plt.colorbar(label="Temperature (°C)")
 plt.show()   
                        
