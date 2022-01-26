@@ -3,8 +3,8 @@
 ###Authorship: Alberto F. Coto Fonseca
 
 #Description: This script automates the processing of satellite imagery from Sentinel-2 for the calculation and creation of
-#vegetation indices (VI) rasters. Using an area of interest (AOI) shapefile, all bands of the image are cropped, which are 
-#saved in a new folder. Later on they are used for the calculation of the VI (NDVI, SAVI, GNDVI and Moisture Index)
+#vegetation indices (VI) rasters. Using an area of interest (AOI) shapefile, all bands of the image are cropped. 
+#Later on they are used for the calculation of the VI (NDVI, SAVI, GNDVI and Moisture Index)
 
 #For cropping every band with the AOI shapefile, both of them should have the same projected coordinates; therefore, a revision 
 #of both crs is made. If their "crs" differ, a reprojection of the AOI is made, so it can overlap the bands.
