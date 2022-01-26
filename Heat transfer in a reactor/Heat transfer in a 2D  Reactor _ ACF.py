@@ -143,7 +143,7 @@ while Tmean>50:  #The process is repeated until the mean temperature reaches 50Â
                                              
     Tmean=(np.mean(Temp))
     tdx = tdx+1
-    print("Time step:", tdx)
+    print("Time step:", tdx) #Prints the timesteps until the process is concluded.
     
 #Plotting the reactor's temperature condition at 50Â°C
 plt.imshow(Temp, cmap='jet')
