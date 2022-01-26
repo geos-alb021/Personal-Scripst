@@ -1,1 +1,1 @@
-Description: This script calculates the heat transfer inside a two dimensional reactor through implicit and explicit approximations. The reactor starts with a temperature of 60°C, and the modeling ends when the mean temperature of the reactor reaches 50°C.
+Description: This script calculates the heat transfer inside a two dimensional reactor through implicit and explicit approximations. The reactor starts with a temperature of 60°C, and the process ends when the mean temperature of the reactor reaches 50°C.
