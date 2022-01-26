@@ -27,7 +27,7 @@ print("Loading satellite image bands")
 directory = 'C:/Users/alcof/Desktop/Scripts/Veg_index/Sentinel2_imagery'
 bands = os.listdir(directory)
 print('\n')
-band2i=rio.open(directory + '/' + bands[1]) #For comparison of the CRS between AOI and satellite data
+band2i=rio.open(directory + '/' + bands[1]) #For comparison of the CRS from the AOI and satellite data
 
 #Loading the shapefile for cropping
 aoi = gpd.read_file('C:/Users/alcof/Desktop/Scripts/Veg_index/Shapefile_AOI/AOI.shp')
@@ -60,11 +60,11 @@ with fio.open("C:/Users/alcof/Desktop/Scripts/Veg_index/Shapefile_AOI/AOI2.shp",
 clipped_directory = 'C:/Users/alcof/Desktop/Scripts/Veg_index/clipped_raster'
 clipped_bands = os.listdir(clipped_directory) 
 
-#Removing old files in the "clipped raster folder"; therefore, only the new rasters of each run are stored
+#Removing old files in the "clipped raster folder"; therefore, only the new rasters of each run are stored.
 for files in clipped_bands:
       os.remove(clipped_directory+'/'+files)
 
-#Cropping the imagery package to an area of interest (AOI)
+#Cropping the bands data to the area of interest (AOI)
 print("Cropping the bands...")
 for band in bands:
     
@@ -88,7 +88,7 @@ print('\n')
 #Loading again the directory with the new clipped data
 clipped_bands = os.listdir(clipped_directory) 
 
-#Loading each band
+#Loading the necessary cropped bands
 band2 = rio.open(clipped_directory + '/' + clipped_bands[1]) #Blue
 band3 = rio.open(clipped_directory + '/' + clipped_bands[2]) #Green
 band4 = rio.open(clipped_directory + '/' + clipped_bands[3]) #Red
@@ -104,7 +104,7 @@ print("Bands height:{}".format(height))
 print("Bands widht:{}".format(width))
 print('\n')
 
-#Converting the bands from integer to float data ( float arrays)
+#Converting the bands from integer to float data (float arrays)
 print("Converting bands to float data")
 red= band4.read(1).astype('float64')
 blue = band2.read(1).astype('float64')
@@ -147,14 +147,14 @@ print("Moisture index min:", mi.min())
 print("Moisture index max:", mi.max())
 print('\n')
 
-#Extracting the date from one of the clipped rasters
+#Extracting the date from one of the clipped rasters in the form of month/day/year
 name = clipped_bands[0]
 lock = name[7:15]
 date = lock[4:6]+'-'+lock[6:8]+'-'+lock[0:4]
 
 ###--------------Creating the combination of bands rasters and vegetation index rasters--------------##
 
-print("Creating rasters of the band combinationa...")
+print("Creating rasters of the band combinations...")
 #Creating a natural color combination raster
 naturalColor = rio.open('C:/Users/alcof/Desktop/Scripts/Veg_index/output/sent2natcolor'+' '+date+'.tiff', 'w', driver='Gtiff',
                      width=width, height=height,
