@@ -8,7 +8,7 @@ NOTE 2: Script run with python v3.8.8
 
 NOTE 3: The following folders should be created in the same place from where you run the script:
 
-"Sentinel2-imagery", this folder contains all the sentinel 2 bands files (where the bands files located in: "GRANULE>NameOfImage>IMG_DATA" of the sentinel2 image folder should be copied).
+"Sentinel2-imagery", this folder contains all the sentinel 2 bands files [.jp2] (where the bands files located in: "GRANULE>NameOfImage>IMG_DATA" of the sentinel2 image folder should be copied).
 
 "clipped_raster", this folder will contain the clipped bands (temporarily).
 
